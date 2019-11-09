@@ -1,5 +1,5 @@
 {
-  "name": "upload-to-gdrive",
+  "name": "bhadoo-cloud",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,7 +8,7 @@
     "prestart": "npm run build",
     "build": "tsc"
   },
-  "author": "Mrigank Krishan",
+  "author": "Parveen Bhadoo",
   "license": "ISC",
   "dependencies": {
     "archiver": "^1.2.0",
