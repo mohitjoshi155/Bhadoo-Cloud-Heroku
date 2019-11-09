@@ -1,32 +1,25 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-exports.__esModule = true;
-var torrentStream = require("torrent-stream");
-var path = require("path");
-var events_1 = require("events");
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var torrentStream = require('torrent-stream');
+var path = require('path');
+var events_1 = require('events');
 var shortid = require("shortid");
 var debug = require("debug")("eMCloud::TorrentEngine");
 var TICK_TIME = 500;
-var Torrent = /** @class */ (function (_super) {
+var Torrent = (function (_super) {
     __extends(Torrent, _super);
     function Torrent(magnet, folderPath, uniqid) {
-        var _this = _super.call(this) || this;
-        _this.magnetLink = magnet;
-        _this.saveToFolderPath = folderPath;
-        _this.uniqid = uniqid;
-        _this.dirStructure = [];
-        _this.initEngine();
-        _this.handleEngine();
-        return _this;
+        _super.call(this);
+        this.magnetLink = magnet;
+        this.saveToFolderPath = folderPath;
+        this.uniqid = uniqid;
+        this.dirStructure = [];
+        this.initEngine();
+        this.handleEngine();
     }
     // Private Methods
     Torrent.prototype.initEngine = function () {
@@ -55,12 +48,13 @@ var Torrent = /** @class */ (function (_super) {
                     downloadedLength: downloadedLength,
                     peers: peers
                 });
-                if (downloadedLength >= _this.totalLength) {
+                if (downloadedLength == _this.totalLength) {
                     _this.emit("progress", {
                         speed: 0,
                         downloadedLength: _this.totalLength
                     });
                     clearInterval(_this.interval);
+                    _this.engine.destroy();
                 }
             }, TICK_TIME);
         });
@@ -68,7 +62,6 @@ var Torrent = /** @class */ (function (_super) {
             var savedFolderPath = path.join(_this.saveToFolderPath, _this.uniqid);
             debug('Torrent downloaded to %s', savedFolderPath);
             _this.emit("downloaded", savedFolderPath);
-            _this.engine.destroy();
         });
     };
     Torrent.prototype.mergeChildren = function (c1, c2) {
@@ -153,7 +146,7 @@ var Torrent = /** @class */ (function (_super) {
     return Torrent;
 }(events_1.EventEmitter));
 exports.Torrent = Torrent;
-var Dir = /** @class */ (function () {
+var Dir = (function () {
     function Dir() {
     }
     return Dir;

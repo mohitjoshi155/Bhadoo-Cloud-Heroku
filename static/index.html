@@ -1,20 +1,10 @@
-<!--
-A Parveen Bhadoo Project (https://www.parveenbhadoo.com)
-Published at SourceForge.net/projects/BhadooCloud and Github.com/ParveenBhadooOfficial/Bhadoo-Cloud
-Project Info is available at https://github.com/ParveenBhadooOfficial/Bhadoo-Cloud/blob/master/README.md 
-Edited and CDN Enabled from https://github.com/Mrigank11/embetacloud
-Open Source Software, All Rights Reserved by their Respected Owners.
--->
-<!DOCTYPE html>
 <html ng-app="app">
 
 <head>
-	<title>Bhadoo Cloud - Directly Upload to Google Drive from Torrent or URLs</title>
-	<meta name="robots" content="noindex">
+	<title>eMbeta Cloud</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/libs/semantic/dist/semantic.min.css" integrity="sha256-hq8jzEEtzNDAbLdCrrDfrRUCgL9NY73htrqqpZ6PzEc=" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/css/index.css" integrity="sha256-iZRUokDd4hKazBECAwFZuMW1ry2bLh0gIeK4DLy7TjU=" crossorigin="anonymous">
-	<link rel="icon" href="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/cloud-favicon.png" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="libs/semantic/dist/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 
 <body ng-controller="main" class="cage">
@@ -23,75 +13,35 @@ Open Source Software, All Rights Reserved by their Respected Owners.
 		<div class="equal width row">
 			<!--logo-->
 			<div class="left floated column">
-			<a href="/"><img border="0" alt="Bhadoo Cloud" src="https://cdn.jsdelivr.net/gh/jscdn/svg@1.0.1/bhadoo-cloud-logo.svg" height="30px"></a><!--New Logo in Time-->
+				<h2 style="color:#2185d0;">
+					<i class="ui large blue cloud icon"></i> eMbeta
+				</h2>
 			</div>
 			<!--controls-->
 			<div class="column right floated right aligned">
-				<!--login button-->
-				<i title="Sign in with Google" ng-click="redirectToLoginUrl(selectedCloud.url)" class="ui circular icon" ng-class="{
-						'loading spinner':!selectedCloud,
-						'disabled':(!selectedCloud || selectedCloud.creds),
-						'green inverted':selectedCloud.creds,
-						'link':(!selectedCloud || !selectedCloud.creds),
-						'user':selectedCloud
+				<i title="Login" ng-click="redirectToLoginUrl(status.consentPageUrl)" class="ui circular icon" ng-class="{
+						'loading':!status,
+						'spinner':!status,
+						'disabled':(!status || status.logged),
+						'inverted':status.logged,
+						'green':status.logged,
+						'link':(!status || !status.logged),
+						'user':status
 					}"></i>
-
-				<i style="display: none" class="ui lock link circular icon" ng-click="toggleIncognito()" ng-class="{'inverted':incognito,'red':incognito}"
-				 title="Incognito"></i>
-				<!--cloud selector-->
-				<div class="ui top left pointing dropdown scDropdown" ng-show="config.csHead.value">
-					<i class="ui cloud circular icon link picon"></i>
-					<input type="hidden" name="selectedCloud">
-					<div class="menu">
-						<div class="item" data-value="{{a}}" ng-class="{'active selected':selectedCloud.displayName == cloud.displayName}" ng-repeat="(a,cloud) in clouds">
-							{{cloud.displayName}}
-						</div>
-					</div>
-				</div>
-				<!--setting-->
-				<i class="ui settings circular link icon" ng-click="showConfig()"></i>
-				<div class="ui small modal" id="config">
-					<div class="header">Configuration</div>
-					<i class="close icon"></i>
-					<div class="content">
-						<div class="ui form">
-							<div class="field" ng-repeat="(x,item) in config">
-								<div title="{{item.title}}" class="ui {{item.type}}">
-									<input type="{{item.type}}" value="{{item.value}}" ng-model="item.value" ng-change="updateConfig()" />
-									<label>{{item.displayName}} </label>
-								</div>
-							</div>
-							<div class="grouped fields">
-								<label>Selected Cloud : </label>
-								<div class="field">
-									<div class="ui fluid selection dropdown scDropdown">
-										<input type="hidden" name="selectedCloud">
-										<i class="dropdown icon"></i>
-										<div class="text">{{selectedCloud.displayName}}</div>
-										<div class="menu">
-											<div class="item" data-value="{{a}}" ng-repeat="(a,cloud) in clouds">{{cloud.displayName}}</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!--connection indicator-->
-				<i class=" ui lightning circular icon " ng-class="{ 'green':connected, 'red':!connected} "></i>
+				<i class="ui lock link circular icon" ng-click="toggleIncognito()" ng-class="{'inverted':incognito,'red':incognito}" title="Incognito"></i>
+				<i class="ui lightning circular icon" ng-class="{'green':connected,'red':!connected}"></i>
 			</div>
 		</div>
 		<!--input-->
-		<div class="row ">
-			<div class="column ">
-				<form onsubmit="return false; " ng-submit="processForm() ">
-					<div class="ui fluid action input ">
-						<input type="text " ng-change="search.results=false " ng-model="url " ng-keydown="console.log($event.keyCode)
-					 " placeholder="Enter url to open, magnet or search torrent... ">
-						<button type="submit " class="ui tiny button " ng-class="{ 'loading':magnetLoading} " ng-if="urlType()=='torrent' ">Load Torrent</button>
-						<button type="submit " class="ui tiny button " ng-if="urlType()=='url' ">Open</button>
-						<button type="submit " class="ui tiny button " ng-class="{ 'loading':magnetLoading} " ng-if="urlType()=='search' ">Search</button>
-						<button type="submit " class="ui tiny button " ng-class="{ 'loading':magnetLoading} " ng-if="urlType()=='magnet' ">Load Magnet</button>
+		<div class="row">
+			<div class="column">
+				<form onsubmit="return false;" ng-submit="processForm()">
+					<div class="ui fluid action input">
+						<input type="text" ng-change="search.results=false" ng-model="url" ng-keydown="console.log($event.keyCode)" placeholder="Enter url to open, magnet or search torrent...">
+
+						<button type="submit" class="ui tiny button" ng-if="urlType()=='url'">Open</button>
+						<button type="submit" class="ui tiny button " ng-class="{'loading':magnetLoading}" ng-if="urlType()=='search'">Search</button>
+						<button type="submit" class="ui tiny button " ng-class="{'loading':magnetLoading}" ng-if="urlType()=='magnet'">Load Magnet</button>
 					</div>
 				</form>
 			</div>
@@ -102,18 +52,10 @@ Open Source Software, All Rights Reserved by their Respected Owners.
 				<div class="ui segment searchResults" ng-class="{'loading':search.loading}">
 					<div class="ui grid">
 						<div class="row" ng-repeat="result in search.results">
-							<div class="eight wide column" style="word-break:break-all">
-								<a href="{{result.link}}">{{result.name}}</a>
-							</div>
+							<div class="eight wide column"><a href="{{result.link}}">{{result.name}}</a></div>
 							<div class="two wide column">{{result.size}}</div>
-							<div class="two wide column">
-								<span class="seeders">{{result.seeders}}</span>
-								<i class="ui arrow up icon"></i>
-							</div>
-							<div class="two wide column">
-								<span class="leechers">{{result.leechers}}</span>
-								<i class="ui arrow down icon"></i>
-							</div>
+							<div class="two wide column"><span class="seeders">{{result.seeders}}</span><i class="ui arrow up icon"></i></div>
+							<div class="two wide column"><span class="leechers">{{result.leechers}}</span><i class="ui arrow down icon"></i></div>
 							<div class="two wide column">
 								<i class="ui large green download link icon" ng-click="addTorrent(result.magnetLink)"></i>
 							</div>
@@ -158,34 +100,19 @@ Open Source Software, All Rights Reserved by their Respected Owners.
 				<download-item ng-repeat="page in torrents track by page.id"></download-item>
 			</div>
 		</div>
-		
-		<div class="row">
-			<div class="column">
-				<!--login button-->
-				<img ng-src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" title="Sign in with Google" ng-click="redirectToLoginUrl(selectedCloud.url)" class="ui circular icon" ng-class="{
-						'loading spinner':!selectedCloud,
-						'disabled':(!selectedCloud || selectedCloud.creds),
-						'green inverted':selectedCloud.creds,
-						'link':(!selectedCloud || !selectedCloud.creds),
-						'user':selectedCloud
-					}">
-
-				<i style="display: none" class="ui lock link circular icon" ng-click="toggleIncognito()" ng-class="{'inverted':incognito,'red':incognito}"
-				 title="Incognito"></i>
-				<p><strong>© <a href="https://github.com/ParveenBhadooOfficial/Bhadoo-Cloud">Bhadoo Cloud</a> & Respected Owners | All Rights Reserved.</strong></p>
-			</div>
-		</div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/libs/jquery/jquery.min.js" integrity="sha256-OWRoY6QU4KhJILOoY5wPPoyUU16NwFG0K0haBo3CkC8=" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/libs/semantic/dist/semantic.min.js" integrity="sha256-clAOqigQj3g3VDZE2D8NjaTUkojDoDEeod4dp2TLed8=" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/libs/angular/angular.min.js" integrity="sha256-6Yu7R8io0sEFNtrtytY3qQsLnaweva/4m25Zq5z1XU8=" crossorigin="anonymous"></script>
+	<script src="libs/jquery/jquery.min.js"></script>
+	<script src="libs/semantic/dist/semantic.min.js"></script>
+	<script src="libs/angular/angular.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/js/index.js" integrity="sha256-vwGGKFFheIK5ojFwP1G6IogPum4fooeYSQhe3XuyeDU=" crossorigin="anonymous"></script>
+	<script src="js/index.js"></script>
 	<!--download item-->
-	<script src="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/parts/downloadItem/downloadItem.js" integrity="sha256-hdXbDlPxDOsduUq1CiFZgbRRvdo07xxDO5L1kPyjnhA=" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/parts/downloadItem/downloadItem.css" integrity="sha256-al5CtqqJdrrRyk1++BuAmngPVDpD2RxQPshRGODCGyA=" crossorigin="anonymous">
+	<script src="parts/downloadItem/downloadItem.js"></script>
+	<link rel="stylesheet" type="text/css" href="parts/downloadItem/downloadItem.css">
 	<!--directory-->
-	<script src="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/parts/directory/directory.js" integrity="sha256-HbfZMOopKd0ib/ia9NKkHPfSb3I6BlB9vsIjFojTWbk=" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ParveenBhadooOfficial/BhadooCloud@1.0/static/parts/directory/directory.css" integrity="sha256-wsMZhM0fzFaPgq9IxX+//DCjgyxYgo7+7x5TNO8u87M=" crossorigin="anonymous">
-	</body>
+	<script src="parts/directory/directory.js"></script>
+	<link rel="stylesheet" type="text/css" href="parts/directory/directory.css">
+
+</body>
+
 </html>

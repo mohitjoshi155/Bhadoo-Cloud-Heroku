@@ -50,12 +50,13 @@ export class Torrent extends EventEmitter {
                     downloadedLength: downloadedLength,
                     peers: peers
                 })
-                if (downloadedLength >= this.totalLength) {
+                if (downloadedLength == this.totalLength) {
                     this.emit("progress", {
                         speed: 0,
                         downloadedLength: this.totalLength
                     });
                     clearInterval(this.interval);
+                    this.engine.destroy();
                 }
             }, TICK_TIME);
         });
@@ -63,7 +64,6 @@ export class Torrent extends EventEmitter {
             var savedFolderPath = path.join(this.saveToFolderPath, this.uniqid);
             debug('Torrent downloaded to %s', savedFolderPath);
             this.emit("downloaded", savedFolderPath);
-            this.engine.destroy();
         });
     }
     private mergeChildren(c1: Array<Dir>, c2: Array<Dir>): Array<Dir> {
