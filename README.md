@@ -25,7 +25,9 @@ Open URLs in Proxy to bypass Restrictions (works like VPN), Check [Demo](https:/
 
 # Usage
 
-Info: Heroku is not supported, Use AWS EC2 (1 Year Free), G Cloud (300$ for 1 Year Free), MS Azure (30 Days Free) for Bhadoo Cloud Installations.
+## Deploy to Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 Installation on [AWS Cloud](https://aws.amazon.com/ec2/)
 
